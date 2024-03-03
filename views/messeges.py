@@ -14,7 +14,7 @@ import openai
 import os
 
 client = OpenAI(
-    api_key= "OPEN_API_KEY"
+    api_key= "YOUR_OPENAI_API"
 )
 
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
@@ -22,7 +22,7 @@ bp = Blueprint("messeges", __name__, url_prefix="/messeges")
 
 def get_answer(text, topic_name):
     completion = client.chat.completions.create(
-        model="YOUR_MODEL",
+        model="YOUR_MODEL_MODEL",
         max_tokens=1024,
         temperature=0.2,
         messages=[
