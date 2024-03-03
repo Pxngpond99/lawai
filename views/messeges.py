@@ -12,9 +12,9 @@ from models.topics import Topic
 from openai import OpenAI
 import openai
 import os
-# "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"
+
 client = OpenAI(
-    api_key= "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"
+    api_key= "OPEN_API_KEY"
 )
 
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
