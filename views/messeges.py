@@ -80,12 +80,21 @@ def index(topic_name):
     if not topic_name:
 
         topic = Topic()
-        topic.name = form.description.data
-
+        order = (
+            models.db.session.query(Topic.name)
+            .filter_by(name=form.description.data)
+            .first()
+        )
+        print(order)
+        if order:
+            topic.name = form.description.data + " " + str(len(order))
+            messege.topic = form.description.data + " " + str(len(order))
+        else:
+            topic.name = form.description.data
+            messege.topic = form.description.data
         topic.created_date = datetime.datetime.now()
         models.db.session.add(topic)
         models.db.session.commit()
-        messege.topic = form.description.data
         topic_name = topic.name
     else:
         messege.topic = topic_name
@@ -97,3 +106,17 @@ def index(topic_name):
         get_answer(form.description.data, topic_name)
 
     return redirect(url_for("messeges.index", topic_name=topic_name))
+
+
+@bp.route("/<topic_id>/delete")
+def delete(topic_id):
+    topic = models.db.session.query(Topic).filter_by(id=topic_id).first()
+    messeges = models.db.session.query(Messege).filter_by(topic=topic.name)
+    for ms in messeges:
+        models.db.session.delete(ms)
+        models.db.session.commit()
+
+    models.db.session.delete(topic)
+    models.db.session.commit()
+
+    return redirect(url_for("messeges.index"))

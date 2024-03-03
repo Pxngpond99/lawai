@@ -64,26 +64,37 @@
   <nav class="navbar position-fixed" style="background-color: #5C391F; height:8vh; width:100%">
     <button class="btn text-white " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
       aria-controls="offcanvasExample">
-      <h5><i class="fa-solid fa-bars" style="margin-right:1vw;"></i> มาตรากฎหมาย </h5>
+      <h5><i class="fa-solid fa-bars" style="margin-right:1vw;"></i> มาตรากฎหมาย
+      </h5>
     </button>
   </nav>
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel"
     style="background-color: #5C391F;">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title text-white" id="offcanvasExampleLabel"> มาตรากฎหมาย </h5>
+      <h5 class="offcanvas-title text-white" id="offcanvasExampleLabel"> มาตรากฎหมาย
+        <a href="{{ url_for('messeges.index') }}" class="text-white" style="padding-left: 10px;"> <i
+            class="fa-solid fa-plus"></i> </a>
+      </h5>
       <button type="button" class="btn-close text-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
       {% if topics %}
       {% for tp in topics %}
-      <a href="{{ url_for('messeges.index', topic_name=tp.name) }}"
-        class="list-group-item list-group-item-action py-3 lh-tight border-bottom">
-        <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1 text-white">{{ tp.name }}</strong>
-          <small class="text-white-50">{{ tp.created_date.strftime('%Y-%m-%d') }}</small>
+      <div class="d-flex justify-content-between border-bottom" style="padding-bottom: 10px; padding-top: 10px;">
+        <a href="{{ url_for('messeges.index', topic_name=tp.name) }}" class=" text-decoration-none">
+          <div class="d-flex w-100 align-items-center justify-content-between">
+            <strong class="mb-1 text-white">{{ tp.name }}</strong>
+          </div>
+        </a>
+        <div>
+          <small class="text-white-50">{{ tp.created_date.strftime('%Y-%m-%d') }}
+          </small>
+          <a href="{{ url_for('messeges.delete', topic_id=tp.id) }}" class="text-white-50">
+            <i class="fa-solid fa-trash"></i>
+          </a>
         </div>
 
-      </a>
+      </div>
       {% endfor %}
       {% endif %}
     </div>
