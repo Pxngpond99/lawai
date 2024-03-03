@@ -9,15 +9,31 @@ import datetime
 import models
 from models.messeges import Messege
 from models.topics import Topic
+from openai import OpenAI
+import openai
+import os
+# "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"
+client = OpenAI(
+    api_key= "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"
+)
 
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
 
 
 def get_answer(text, topic_name):
+    completion = client.chat.completions.create(
+        model="ft:gpt-3.5-turbo-0613:personal::8tCNf15V",
+        max_tokens=1024,
+        temperature=0.2,
+        messages=[
+            {"role": "system", "content": "คุณคือนักกฎหมายที่เชี่ยวชาญด้านการจัดซื้อจัดจ้างภาครัฐ"},
+            {"role": "user", "content": f"คำถาม: {text} เรื่อง การจัดซื้อจัดจ้างภาครัฐ"}
+        ]
+    )
 
     messege = Messege()
-
-    messege.description = "คำตอบของคำถาม"
+    
+    messege.description = f"{completion.choices[0].message.content}"
     messege.topic = topic_name
     messege.created_by = "Ai"
     messege.created_date = datetime.datetime.now()
