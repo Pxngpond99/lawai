@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, login_user, logout_user
-
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from forms import messeges as ms
@@ -13,10 +12,7 @@ from openai import OpenAI
 import openai
 import os
 
-
-
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
-
 
 def get_answer(text, topic_name):
     
