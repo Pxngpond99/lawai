@@ -13,11 +13,12 @@ from models.topics import Topic
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
 
 
-def get_answer(text):
+def get_answer(text, topic_name):
 
     messege = Messege()
 
     messege.description = "คำตอบของคำถาม"
+    messege.topic = topic_name
     messege.created_by = "Ai"
     messege.created_date = datetime.datetime.now()
     models.db.session.add(messege)
@@ -33,7 +34,6 @@ def get_answer(text):
 def index(topic_name):
 
     messeges = None
-    messeges = models.db.session.query(Messege)
     if topic_name:
         messeges = models.db.session.query(Messege).filter_by(topic=topic_name)
     # if topic_name:
@@ -78,9 +78,6 @@ def index(topic_name):
     models.db.session.add(messege)
     models.db.session.commit()
     if form.description.data:
-        get_answer(form.description.data)
-    messeges = models.db.session.query(Messege)
-    if topic_name:
-        messeges = models.db.session.query(Messege).filter_by(topic=topic_name)
+        get_answer(form.description.data, topic_name)
 
     return redirect(url_for("messeges.index", topic_name=topic_name))
