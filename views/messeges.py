@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, login_user, logout_user
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from forms import messeges as ms
@@ -12,14 +13,27 @@ from openai import OpenAI
 import openai
 import os
 
+client = OpenAI(
+    api_key= "OPEN_API_KEY"
+)
+
 bp = Blueprint("messeges", __name__, url_prefix="/messeges")
 
+
 def get_answer(text, topic_name):
-    
+    completion = client.chat.completions.create(
+        model="YOUR_MODEL",
+        max_tokens=1024,
+        temperature=0.2,
+        messages=[
+            {"role": "system", "content": "คุณคือนักกฎหมายที่เชี่ยวชาญด้านการจัดซื้อจัดจ้างภาครัฐ"},
+            {"role": "user", "content": f"คำถาม: {text} เรื่อง การจัดซื้อจัดจ้างภาครัฐ"}
+        ]
+    )
 
     messege = Messege()
     
-    messege.description = "test"
+    messege.description = f"{completion.choices[0].message.content}"
     messege.topic = topic_name
     messege.created_by = "Ai"
     messege.created_date = datetime.datetime.now()
